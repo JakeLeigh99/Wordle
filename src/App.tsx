@@ -27,6 +27,7 @@ const App = () => {
     new Array(6).fill(null),
   );
   const [currGuess, setCurrentGuess] = useState<string>('');
+  const [hasWon, setHasWon] = useState<boolean>(false);
 
   const getRandomWord = async () => {
     const res = await axios.get(
@@ -35,32 +36,41 @@ const App = () => {
     setWord(res.data[0]);
   };
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    // if key pressed is a letter
-    if (/^[a-zA-Z]$/.test(e.key)) {
-      if (currGuess.length !== WORD_LENGTH) setCurrentGuess(currGuess + e.key);
+  const checkGuess = () => {
+    if (currGuess === word) {
+      setHasWon(true);
+      return;
     } else {
-      if (e.key === 'Backspace') {
-        setCurrentGuess(currGuess.slice(0, -1));
-        return;
-      }
-      if (currGuess.length === WORD_LENGTH && e.key === 'Enter') {
-        console.log('check guess', currGuess, word);
-        if (currGuess === word) {
-          console.log('Correct guess');
-          return;
-        } else {
-          setGuesses(prev => {
-            const newGuesses = [...prev];
-            newGuesses[newGuesses.findIndex(val => val == null)] = currGuess;
-            return newGuesses;
-          });
-          setCurrentGuess('');
-        }
-        return;
-      } else {
-        console.log('Not enough letters');
-      }
+      setGuesses(prev => {
+        const newGuesses = [...prev];
+        newGuesses[newGuesses.findIndex(val => val == null)] = currGuess;
+        return newGuesses;
+      });
+      setCurrentGuess('');
+      console.log('Word:', word);
+    }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (hasWon) return;
+
+    const isLetter = /^[a-zA-Z]$/.test(e.key);
+    const isBackspace = e.key === 'Backspace';
+    const isEnter = e.key === 'Enter';
+    const isGuessComplete = currGuess.length === WORD_LENGTH;
+
+    if (isLetter && !isGuessComplete) {
+      setCurrentGuess(currGuess + e.key);
+      return;
+    }
+
+    if (isBackspace) {
+      setCurrentGuess(currGuess.slice(0, -1));
+      return;
+    }
+
+    if (isEnter && isGuessComplete) {
+      checkGuess();
     }
   };
 
