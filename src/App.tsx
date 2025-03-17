@@ -36,7 +36,21 @@ const App = () => {
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    setCurrentGuess(currGuess + e.key);
+    // if key pressed is a letter
+    if (/^[a-zA-Z]$/.test(e.key)) {
+      if (currGuess.length !== WORD_LENGTH) setCurrentGuess(currGuess + e.key);
+    } else {
+      if (e.key === 'Backspace') {
+        setCurrentGuess(currGuess.slice(0, -1));
+        return;
+      }
+      if (currGuess.length === WORD_LENGTH && e.key === 'Enter') {
+        console.log('check guess');
+        return;
+      } else {
+        console.log('Not enough letters');
+      }
+    }
   };
 
   useEffect(() => {
@@ -50,7 +64,6 @@ const App = () => {
       <div className="board">
         {guesses.map((guess, index) => {
           const isCurrGuess = index === guesses.findIndex(val => val == null);
-          console.log('isCurrGuess', isCurrGuess);
           return (
             <Line key={index} guess={isCurrGuess ? currGuess : (guess ?? '')} />
           );
