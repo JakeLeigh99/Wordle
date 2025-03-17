@@ -19,4 +19,12 @@
   width: 60px;
   border: 1px solid grey;
   margin: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.letter {
+  color: white;
+  font-size: 32px;
 }

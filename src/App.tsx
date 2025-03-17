@@ -10,7 +10,7 @@ const Line = ({ guess }: LineProps) => {
     const char = guess[i];
     tiles.push(
       <div key={i} className="tile">
-        {char}
+        <h2 className="letter">{char && char.toUpperCase()}</h2>
       </div>,
     );
   }
@@ -32,7 +32,7 @@ const App = () => {
     const res = await axios.get(
       'https://random-word-api.vercel.app/api?words=1&length=5',
     );
-    setWord(res.data);
+    setWord(res.data[0]);
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -45,7 +45,18 @@ const App = () => {
         return;
       }
       if (currGuess.length === WORD_LENGTH && e.key === 'Enter') {
-        console.log('check guess');
+        console.log('check guess', currGuess, word);
+        if (currGuess === word) {
+          console.log('Correct guess');
+          return;
+        } else {
+          setGuesses(prev => {
+            const newGuesses = [...prev];
+            newGuesses[newGuesses.findIndex(val => val == null)] = currGuess;
+            return newGuesses;
+          });
+          setCurrentGuess('');
+        }
         return;
       } else {
         console.log('Not enough letters');
@@ -55,6 +66,9 @@ const App = () => {
 
   useEffect(() => {
     getRandomWord();
+  }, []);
+
+  useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currGuess]);
