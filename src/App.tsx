@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import axios from 'axios';
+import words from './data/words.json';
 
 const WORD_LENGTH = 5;
 
@@ -29,11 +29,9 @@ const App = () => {
   const [currGuess, setCurrentGuess] = useState<string>('');
   const [hasWon, setHasWon] = useState<boolean>(false);
 
-  const getRandomWord = async () => {
-    const res = await axios.get(
-      ' https://random-word-api.herokuapp.com/word?length=5',
-    );
-    setWord(res.data[0]);
+  const getRandomWord = () => {
+    const randomWord = words[Math.floor(Math.random() * words.length)];
+    setWord(randomWord);
   };
 
   const checkGuess = () => {
