@@ -17,7 +17,7 @@
 .tile {
   height: 60px;
   width: 60px;
-  border: 1px solid grey;
+  border: 1px solid rgb(71, 71, 71);
   margin: 4px;
   display: flex;
   align-items: center;
@@ -29,18 +29,14 @@
   font-size: 32px;
 }
 
-.grey  {
-  background-color: none;
-}
-
 .darkGrey {
-  background-color: lightgray;
+  background-color: rgb(78, 78, 78);
 }
 
 .green {
-  background-color: green;
+  background-color: rgb(0, 136, 0);
 }
 
 .orange {
-  background-color: orange;
+  background-color: rgb(223, 145, 0);
 }

@@ -6,7 +6,7 @@ const WORD_LENGTH = 5;
 
 const Line = ({ guess, word, isFinal }: LineProps) => {
   const tiles = [];
-  let colour = 'grey';
+  let colour = '';
 
   for (let i = 0; i < WORD_LENGTH; i++) {
     const char = guess[i];
@@ -25,8 +25,8 @@ const Line = ({ guess, word, isFinal }: LineProps) => {
       }
     }
     tiles.push(
-      <div key={i} className="tile">
-        <h2 className={`letter ${colour}`}>{char && char.toUpperCase()}</h2>
+      <div key={i} className={`tile ${colour}`}>
+        <h2 className="letter">{char && char.toUpperCase()}</h2>
       </div>,
     );
   }
