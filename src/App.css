@@ -13,30 +13,3 @@
 .line {
   display: flex;
 }
-
-.tile {
-  height: 60px;
-  width: 60px;
-  border: 1px solid rgb(71, 71, 71);
-  margin: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.letter {
-  color: white;
-  font-size: 32px;
-}
-
-.darkGrey {
-  background-color: rgb(78, 78, 78);
-}
-
-.green {
-  background-color: rgb(0, 136, 0);
-}
-
-.orange {
-  background-color: rgb(223, 145, 0);
-}

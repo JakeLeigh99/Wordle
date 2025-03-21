@@ -1,43 +1,8 @@
 import { useEffect, useState } from 'react';
-import './App.css';
 import words from './data/words.json';
-
-const WORD_LENGTH = 5;
-
-const Line = ({ guess, word, isFinal }: LineProps) => {
-  const tiles = [];
-  let colour = '';
-
-  for (let i = 0; i < WORD_LENGTH; i++) {
-    const char = guess[i];
-    const isInWord = word.includes(char);
-    const isInCorrectPlace = char === word[i];
-
-    if (isFinal) {
-      if (!isInWord) {
-        colour = 'darkGrey';
-      }
-      if (isInCorrectPlace) {
-        colour = 'green';
-      }
-      if (isInWord && !isInCorrectPlace) {
-        colour = 'orange';
-      }
-    }
-    tiles.push(
-      <div key={i} className={`tile ${colour}`}>
-        <h2 className="letter">{char && char.toUpperCase()}</h2>
-      </div>,
-    );
-  }
-  return <div className="line">{tiles}</div>;
-};
-
-type LineProps = {
-  guess: string;
-  word: string;
-  isFinal: boolean;
-};
+import { Line } from './Line/Line';
+import { WORD_LENGTH } from './constants';
+import './App.css';
 
 const App = () => {
   const [word, setWord] = useState<string>('');
@@ -47,15 +12,22 @@ const App = () => {
   const [currGuess, setCurrentGuess] = useState<string>('');
   const [hasWon, setHasWon] = useState<boolean>(false);
 
+  const [gameMessage, setGameMessage] = useState('');
+
   const getRandomWord = () => {
     const randomWord = words[Math.floor(Math.random() * words.length)];
     setWord(randomWord);
-    console.log('randomWord', randomWord);
   };
 
   const checkGuess = () => {
+    if (!words.includes(currGuess)) {
+      setGameMessage('Not a real word!');
+      setCurrentGuess('');
+      return;
+    }
     if (currGuess === word) {
       setHasWon(true);
+      setGameMessage('Well done!');
       return;
     } else {
       setGuesses(prev => {
@@ -64,7 +36,7 @@ const App = () => {
         return newGuesses;
       });
       setCurrentGuess('');
-      console.log('Word:', word);
+      setGameMessage('');
     }
   };
 
@@ -103,6 +75,7 @@ const App = () => {
   return (
     <div className="container">
       <div className="board">
+        {gameMessage && <h1>{gameMessage}</h1>}
         {guesses.map((guess, index) => {
           const isCurrGuess = index === guesses.findIndex(val => val == null);
           return (
