@@ -4,13 +4,29 @@ import words from './data/words.json';
 
 const WORD_LENGTH = 5;
 
-const Line = ({ guess }: LineProps) => {
+const Line = ({ guess, word, isFinal }: LineProps) => {
   const tiles = [];
+  let colour = 'grey';
+
   for (let i = 0; i < WORD_LENGTH; i++) {
     const char = guess[i];
+    const isInWord = word.includes(char);
+    const isInCorrectPlace = char === word[i];
+
+    if (isFinal) {
+      if (!isInWord) {
+        colour = 'darkGrey';
+      }
+      if (isInCorrectPlace) {
+        colour = 'green';
+      }
+      if (isInWord && !isInCorrectPlace) {
+        colour = 'orange';
+      }
+    }
     tiles.push(
       <div key={i} className="tile">
-        <h2 className="letter">{char && char.toUpperCase()}</h2>
+        <h2 className={`letter ${colour}`}>{char && char.toUpperCase()}</h2>
       </div>,
     );
   }
@@ -19,6 +35,8 @@ const Line = ({ guess }: LineProps) => {
 
 type LineProps = {
   guess: string;
+  word: string;
+  isFinal: boolean;
 };
 
 const App = () => {
@@ -32,6 +50,7 @@ const App = () => {
   const getRandomWord = () => {
     const randomWord = words[Math.floor(Math.random() * words.length)];
     setWord(randomWord);
+    console.log('randomWord', randomWord);
   };
 
   const checkGuess = () => {
@@ -87,7 +106,12 @@ const App = () => {
         {guesses.map((guess, index) => {
           const isCurrGuess = index === guesses.findIndex(val => val == null);
           return (
-            <Line key={index} guess={isCurrGuess ? currGuess : (guess ?? '')} />
+            <Line
+              key={index}
+              guess={isCurrGuess ? currGuess : (guess ?? '')}
+              isFinal={!isCurrGuess && guess != null}
+              word={word}
+            />
           );
         })}
       </div>

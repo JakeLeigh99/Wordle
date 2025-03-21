@@ -28,3 +28,19 @@
   color: white;
   font-size: 32px;
 }
+
+.grey  {
+  background-color: none;
+}
+
+.darkGrey {
+  background-color: lightgray;
+}
+
+.green {
+  background-color: green;
+}
+
+.orange {
+  background-color: orange;
+}
