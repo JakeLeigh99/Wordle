@@ -19,6 +19,16 @@ const App = () => {
     setWord(randomWord);
   };
 
+  const updateGuess = (message?: string) => {
+    setGuesses(prev => {
+      const newGuesses = [...prev];
+      newGuesses[newGuesses.findIndex(val => val == null)] = currGuess;
+      return newGuesses;
+    });
+    setCurrentGuess('');
+    message && setGameMessage(message);
+  };
+
   const checkGuess = () => {
     if (!words.includes(currGuess)) {
       setGameMessage('Not a real word!');
@@ -26,17 +36,11 @@ const App = () => {
       return;
     }
     if (currGuess === word) {
+      updateGuess('Well done!');
       setHasWon(true);
-      setGameMessage('Well done!');
       return;
     } else {
-      setGuesses(prev => {
-        const newGuesses = [...prev];
-        newGuesses[newGuesses.findIndex(val => val == null)] = currGuess;
-        return newGuesses;
-      });
-      setCurrentGuess('');
-      setGameMessage('');
+      updateGuess();
     }
   };
 
