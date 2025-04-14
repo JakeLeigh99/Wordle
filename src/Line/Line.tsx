@@ -11,7 +11,6 @@ const Line = ({ guess, word, isFinal }: LineProps) => {
     const isInCorrectPlace = char === word[i];
 
     if (isFinal) {
-      console.log('isFinal');
       if (!isInWord) {
         colour = 'darkGrey';
       }

@@ -62,8 +62,16 @@ const App = () => {
       return;
     }
 
-    if (isEnter && isGuessComplete) {
-      checkGuess();
+    if (isEnter) {
+      const actualGuesses = guesses.filter(guess => guess != null);
+      if (actualGuesses.length === 5) {
+        setGameMessage(`Game over! The word was: ${word}`);
+        setHasWon(true);
+        return;
+      }
+      if (isGuessComplete) {
+        checkGuess();
+      }
     }
   };
 
