@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
+import './App.css';
+import { WORD_LENGTH } from './constants';
 import words from './data/words.json';
 import { Line } from './Line/Line';
-import { WORD_LENGTH } from './constants';
-import './App.css';
 
 const App = () => {
   const [word, setWord] = useState<string>('');
